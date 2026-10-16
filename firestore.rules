@@ -1,0 +1,81 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // Default deny all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Users Collection
+    match /users/{userId} {
+      allow get: if isOwner(userId);
+      allow create: if isOwner(userId)
+        && request.resource.data.userId == userId
+        && request.resource.data.email is string
+        && request.resource.data.email.size() <= 256;
+      allow update: if isOwner(userId)
+        && request.resource.data.userId == resource.data.userId;
+      allow delete: if false;
+    }
+
+    // Morality Evaluations (Annex 3 Reports)
+    match /moralityEvaluations/{evalId} {
+      allow get, list: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn()
+        && isValidId(evalId)
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.studentName is string
+        && request.resource.data.studentName.size() <= 128
+        && request.resource.data.studentGrade is string
+        && request.resource.data.studentGrade.size() <= 64
+        && request.resource.data.scoreOutOfTen is number;
+      allow update: if isSignedIn()
+        && resource.data.userId == request.auth.uid
+        && request.resource.data.userId == resource.data.userId;
+      allow delete: if isSignedIn() && resource.data.userId == request.auth.uid;
+    }
+
+    // Quiz Records
+    match /quizRecords/{quizId} {
+      allow get, list: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn()
+        && isValidId(quizId)
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.correctCount is number
+        && request.resource.data.totalCount is number
+        && request.resource.data.percentage is number;
+      allow update: if isSignedIn()
+        && resource.data.userId == request.auth.uid
+        && request.resource.data.userId == resource.data.userId;
+      allow delete: if isSignedIn() && resource.data.userId == request.auth.uid;
+    }
+
+    // Custom Presentations & Reels
+    match /customPresentations/{deckId} {
+      allow get, list: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn()
+        && isValidId(deckId)
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.titleKhmer is string
+        && request.resource.data.titleKhmer.size() <= 256;
+      allow update: if isSignedIn()
+        && resource.data.userId == request.auth.uid
+        && request.resource.data.userId == resource.data.userId;
+      allow delete: if isSignedIn() && resource.data.userId == request.auth.uid;
+    }
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User profile information",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "maxLength": 128 },
+        "email": { "type": "string", "maxLength": 256 },
+        "displayName": { "type": "string", "maxLength": 128 },
+        "role": { "type": "string", "enum": ["teacher", "student", "parent", "administrator"] },
+        "schoolName": { "type": "string", "maxLength": 256 },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["userId", "email", "createdAt"]
+    },
+    "MoralityEvaluation": {
+      "title": "MoralityEvaluation",
+      "description": "Student morality evaluation report based on Annex 3 of Circular 417",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "studentName": { "type": "string", "maxLength": 128 },
+        "studentGrade": { "type": "string", "maxLength": 64 },
+        "schoolName": { "type": "string", "maxLength": 256 },
+        "scoreEarned": { "type": "number" },
+        "scoreOutOfTen": { "type": "number" },
+        "gradeLetter": { "type": "string", "maxLength": 8 },
+        "cleanlinessScore": { "type": "number" },
+        "politenessScore": { "type": "number" },
+        "orderlinessScore": { "type": "number" },
+        "punctualityScore": { "type": "number" },
+        "mindfulnessScore": { "type": "number" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["userId", "studentName", "studentGrade", "scoreOutOfTen", "gradeLetter", "createdAt"]
+    },
+    "QuizRecord": {
+      "title": "QuizRecord",
+      "description": "Student quiz submission record",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "quizTitle": { "type": "string", "maxLength": 256 },
+        "correctCount": { "type": "number" },
+        "totalCount": { "type": "number" },
+        "percentage": { "type": "number" },
+        "gradeKhmer": { "type": "string", "maxLength": 64 },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["userId", "correctCount", "totalCount", "percentage", "createdAt"]
+    },
+    "CustomPresentation": {
+      "title": "CustomPresentation",
+      "description": "User created or generated slide deck",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "titleKhmer": { "type": "string", "maxLength": 256 },
+        "subtitleKhmer": { "type": "string", "maxLength": 256 },
+        "slidesJson": { "type": "string", "maxLength": 50000 },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["userId", "titleKhmer", "slidesJson", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "User profile collection"
+    },
+    "/moralityEvaluations/{evalId}": {
+      "schema": "MoralityEvaluation",
+      "description": "Student morality evaluation documents"
+    },
+    "/quizRecords/{quizId}": {
+      "schema": "QuizRecord",
+      "description": "Quiz completion documents"
+    },
+    "/customPresentations/{deckId}": {
+      "schema": "CustomPresentation",
+      "description": "Custom slide presentations created by users"
+    }
+  }
+}
