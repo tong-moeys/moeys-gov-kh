@@ -8,6 +8,7 @@ import { ShortVideoReels } from '@/components/ShortVideoReels';
 import { InteractiveQuiz } from '@/components/InteractiveQuiz';
 import { KhmerPracticeExercises } from '@/components/KhmerPracticeExercises';
 import { GuidelinesReference } from '@/components/GuidelinesReference';
+import { SchoolMeetingMinutesGenerator } from '@/components/SchoolMeetingMinutesGenerator';
 import { AiStudioGeneratorModal } from '@/components/AiStudioGeneratorModal';
 import { SlideDeck, VideoReel, QuizQuestion } from '@/data/moeys-guidelines';
 import {
@@ -17,7 +18,8 @@ import {
   FileCheck,
   BookOpen,
   Award,
-  Sparkles
+  Sparkles,
+  FileSpreadsheet
 } from 'lucide-react';
 
 import { testFirebaseConnection } from '@/lib/firebase';
@@ -127,6 +129,18 @@ export default function HomePage() {
                 <BookOpen className="w-4 h-4 text-slate-700" />
                 <span>៥. បទដ្ឋានក្រសួង (Reference)</span>
               </button>
+
+              <button
+                onClick={() => setActiveTab('minutes')}
+                className={`flex items-center gap-2 py-3 px-3 sm:px-4 text-xs sm:text-sm font-bold border-b-2 transition-all whitespace-nowrap ${
+                  activeTab === 'minutes'
+                    ? 'border-amber-600 text-amber-800 bg-amber-50/70 rounded-t-lg'
+                    : 'border-transparent text-slate-600 hover:text-slate-900'
+                }`}
+              >
+                <FileSpreadsheet className="w-4 h-4 text-amber-600" />
+                <span>៦. កំណត់ហេតុ គ.គ.ស. (លិខិត ៤៧)</span>
+              </button>
             </div>
 
             <button
@@ -167,6 +181,8 @@ export default function HomePage() {
           )}
 
           {activeTab === 'reference' && <GuidelinesReference />}
+
+          {activeTab === 'minutes' && <SchoolMeetingMinutesGenerator />}
         </main>
       </div>
 

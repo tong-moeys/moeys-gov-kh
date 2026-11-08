@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
-import { Presentation, Play, HelpCircle, FileCheck, Award, Sparkles } from 'lucide-react';
+import { Presentation, Play, HelpCircle, FileCheck, Award, Sparkles, FileSpreadsheet } from 'lucide-react';
 
 interface HeroBannerProps {
   onSelectTab: (tab: string) => void;
@@ -62,6 +62,14 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
               >
                 <FileCheck className="w-4 h-4 text-emerald-600" />
                 <span>លំហាត់អនុវត្ត</span>
+              </button>
+
+              <button
+                onClick={() => onSelectTab('minutes')}
+                className="flex items-center gap-2 px-4 py-2.5 bg-amber-50 border border-amber-300 hover:bg-amber-100 text-amber-900 rounded-lg text-sm font-semibold transition-all active:scale-98 shadow-xs"
+              >
+                <FileSpreadsheet className="w-4 h-4 text-amber-700" />
+                <span>កំណត់ហេតុ គ.គ.ស. (លិខិត ៤៧)</span>
               </button>
 
               <button

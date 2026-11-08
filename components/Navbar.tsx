@@ -105,6 +105,16 @@ export const Navbar: React.FC<NavbarProps> = ({
           >
             បទដ្ឋានក្រសួង
           </button>
+          <button
+            onClick={() => setActiveTab('minutes')}
+            className={`whitespace-nowrap shrink-0 transition-colors pb-1 border-b-2 ${
+              activeTab === 'minutes'
+                ? 'text-amber-700 border-amber-600 font-semibold'
+                : 'border-transparent hover:text-slate-900'
+            }`}
+          >
+            កំណត់ហេតុ គ.គ.ស. (លិខិត ៤៧)
+          </button>
         </nav>
 
         {/* Zone 3: Actions (Google Auth + AI Generator) */}
@@ -184,6 +194,14 @@ export const Navbar: React.FC<NavbarProps> = ({
           }`}
         >
           បទដ្ឋាន
+        </button>
+        <button
+          onClick={() => setActiveTab('minutes')}
+          className={`px-2.5 py-1 rounded whitespace-nowrap ${
+            activeTab === 'minutes' ? 'bg-amber-100 text-amber-800 font-bold' : 'text-slate-600'
+          }`}
+        >
+          កំណត់ហេតុ គ.គ.ស.
         </button>
       </div>
     </header>
